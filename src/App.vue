@@ -1,8 +1,11 @@
 <script setup>
-import MovieForm from "@/MovieForm.vue";
-import MovieItem from "@/MovieItem.vue";
+import MovieItem from "@/components/MovieItem.vue";
 import { items } from "./movies.json";
-import { computed, ref } from "vue";
+import { computed, ref, defineAsyncComponent } from "vue";
+
+// async components
+const AppModal = defineAsyncComponent(() => import("@/components/AppModal.vue"));
+const MovieForm = defineAsyncComponent(() => import("@/components/MovieForm.vue"));
 
 const movies = ref(items);
 const currentMovie = ref();
@@ -74,15 +77,18 @@ function removeRatings() {
 
 <template>
   <div class="app">
-    <div v-if="showMovieForm" class="modal-wrapper">
-      <div class="modal-wrapper-inner">
-        <MovieForm
-            @update:modelValue="saveMovie"
-            :modelValue="currentMovie"
-            @cancel="hideForm"
-        />
-      </div>
-    </div>
+    <AppModal
+        v-if="showMovieForm"
+        :title="currentMovie?.id ? 'Edit Movie' : 'Add Movie'"
+        @close="hideForm()"
+    >
+      <MovieForm
+          v-if="showMovieForm"
+          @update:modelValue="saveMovie"
+          :modelValue="currentMovie"
+          @cancel="hideForm"
+      />
+    </AppModal>
     <div class="movie-actions-list-wrapper">
       <div class="movie-actions-list-info">
         <span>Total Movies: {{ totalMovies }}</span>
