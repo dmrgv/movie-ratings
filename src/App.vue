@@ -78,8 +78,8 @@ function removeRatings() {
 <template>
   <div class="app">
     <AppModal
-        v-if="showMovieForm"
-        :title="currentMovie?.id ? $translate('Edit Movie') : $translate('Add Movie')"
+        :show="showMovieForm"
+        :title="currentMovie?.id ? 'Edit Movie' : 'Add Movie'"
         @close="hideForm()"
     >
       <MovieForm
