@@ -3,7 +3,8 @@ import { computed } from "vue";
 /*
 These are Icons that you can use, of course you can use other ones if you prefer.
 */
-import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/vue/24/solid";
+import { PencilIcon, StarIcon, TrashIcon, EyeIcon } from "@heroicons/vue/24/solid";
+import MovieStarRating from "@/components/MovieStarRating.vue";
 
 const props = defineProps({
   movie: { type: Object, default: null },
@@ -32,28 +33,7 @@ function editMovie() {
 <template>
   <div class="movie-item group">
     <div class="movie-item-image-wrapper">
-      <div class="movie-item-star-wrapper">
-        <StarIcon
-            id="rating"
-            class="movie-item-star-rating-icon"
-            :class="{
-            'text-yellow-500': !notRated,
-            'text-gray-500': notRated,
-          }"
-        />
-        <div class="movie-item-star-content-wrapper">
-          <span
-              v-if="!notRated"
-              id="rating-stars"
-              class="movie-item-star-content-rating-rated"
-          >
-            {{ movie.rating }}
-          </span>
-          <span v-else class="movie-item-star-content-rating-not-rated">
-            -
-          </span>
-        </div>
-      </div>
+      <MovieStarRating :rating="movie.rating" />
       <img
           v-if="movie?.image"
           :src="movie.image"
@@ -112,6 +92,12 @@ function editMovie() {
             >
               <TrashIcon class="w-4 h-4" />
             </button>
+            <RouterLink
+                class="movie-item-action-detail-button"
+                :to="{ name: 'movie', params: { id: movie.id } }"
+            >
+              <EyeIcon class="w-4 h-4" />
+            </RouterLink>
           </div>
         </div>
       </div>
